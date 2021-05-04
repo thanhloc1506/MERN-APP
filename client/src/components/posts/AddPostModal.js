@@ -29,7 +29,7 @@ const AddPostModal = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await createPost(newPost);
+    const {success, message} = await createPost(newPost);
     resetAddPostData();
   };
   return (

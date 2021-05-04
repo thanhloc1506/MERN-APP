@@ -3,6 +3,7 @@ import { authReducer } from "../reducers/authReducer";
 import { setAuthToken } from "../utils/setAuthToken";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { apiUrl } from "./constants";
 
 export const AuthContext = createContext();
 
@@ -22,7 +23,7 @@ const AuthContextProvider = ({ children }) => {
       setAuthToken(localStorage["token"]);
     }
     try {
-      const response = await axios.get(`http://localhost:5000/api/users`);
+      const response = await axios.get(`${apiUrl}users`);
       if (response.data.success) {
         dispatch({
           type: "SET_AUTH",
@@ -43,10 +44,7 @@ const AuthContextProvider = ({ children }) => {
 
   const loginUser = async (userForm) => {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/users/login`,
-        userForm
-      );
+      const response = await axios.post(`${apiUrl}users/login`, userForm);
 
       if (response.data.success) {
         localStorage.setItem("token", response.data.accessToken);
@@ -64,7 +62,7 @@ const AuthContextProvider = ({ children }) => {
   const registerUser = async (registerForm) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/register`,
+        `${apiUrl}users/register`,
         registerForm
       );
 
@@ -78,7 +76,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logoutUser = async () => {
-    // await axios.get(`http://localhost:5000/api/users/logout`);
+    // await axios.get(`${apiUrl}users/logout`);
     localStorage.removeItem("token");
     await setAuthToken(null);
     await dispatch({
